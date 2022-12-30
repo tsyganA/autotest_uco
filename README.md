@@ -28,5 +28,5 @@ npm i chai
 
 Run:
 ```shell
-mocha uco.js
+mocha clientupdateinformation.js
 ```

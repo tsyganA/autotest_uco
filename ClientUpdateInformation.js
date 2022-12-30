@@ -21,188 +21,21 @@ await page.setViewport({
 
 
 
-async function registrGoogle (page, language, color) {
-    await page.waitForTimeout(1000);
-// login                   
-    await page.waitForSelector(`input[name='email']`);
-await page.type(`input[name='email']`, "test@gmail.com");
-
-    await page.waitForTimeout(1000);
-// password
-    await page.waitForSelector(`input[name='password']`);
-await page.type(`input[name='password']`, "test123");
-
-    await page.waitForTimeout(1000);
-// button login  
-    await page.waitForSelector(`button[type='submit']`);
-await page.click(`button[type='submit']`)
-    console.log("Login success:  "+ language +" language, "+ color +"  theme!");
-
-    await page.waitForTimeout(1000);
-// input message
-    await page.waitForSelector(`input[name="message"]`);
-await page.type(`input[name="message"]`, ""+ language +" language, "+ color +"  theme");
-
-    await page.waitForTimeout(1000);
-// button submit  
-        await page.waitForXPath(`/html/body/div/div/div/div[2]/button/span[1]`);
-const buttonSubmit = await page.$x(`/html/body/div/div/div/div[2]/button/span[1]`);
-await buttonSubmit[0].click();
-    console.log("Message sent:  {"+ language +" language, "+ color +"  theme}");
-
-    await page.waitForTimeout(1000);
-// last message
-        await page.waitForXPath(`/html/body/div/div/div/div[1]/div[last()]`);
-const lastMessage = await page.$x(`/html/body/div/div/div/div[1]/div[last()]`);
-await lastMessage[0].click();
-
-    await page.waitForTimeout(3000);
-// button logout 
-        await page.waitForXPath(`/html/body/div/header/div/div/button/span[1]`);
-const buttonLogout = await page.$x(`/html/body/div/header/div/div/button/span[1]`);
-await buttonLogout[0].click();
-    console.log("Logout success!");
-    console.log("------------------------------------------");
-}
-
-
-
-async function chekTogl (page) {
-    await page.waitForTimeout(1000);
-// togle checkbox
-    await page.waitForSelector(`input[type="checkbox"]`);
-await page.click(`input[type="checkbox"]`)
-    console.log('Toggle theme switched!');
-}
-
-
-
-async function languageSelect (page) {
-// language menu
-await page.waitForSelector(`#demo-customized-select-native`);
-await page.click(`#demo-customized-select-native`);  
-
-    await page.waitForTimeout(1000);
-// language select
-await page.keyboard.press('ArrowDown');
-    await page.waitForTimeout(1000)
-await page.keyboard.press('Enter');
-    console.log('Language changed!');
-}
-
-
 
 async function elementDelete (page, xpath) {
 let twoDelete = (await page.$x(xpath))[0];
 let twoElement = await page.evaluate(el => el.value, twoDelete);
     for (let i = 0; i < twoElement.length; i++) {
-    await page.keyboard.press('Backspace');
+    await page.keyboard.press('Delete');
     } 
 }
 
 
 
 
-async function equallyXpathInnerText (page, xpath, text, equally) {
-
-const equallySelector = await page.$x(xpath);
-
-  if(equallySelector != 0) {
-
-  let elementXpath = (await page.$x(xpath))[0];
-  let textContent = await page.evaluate(el => el.innerText, elementXpath);
- 
-  console.log(text + '  = '+ textContent);
-
-    if(textContent != equally) {
-
-      console.log('Wrong!!!  Right text ' + text +' = '+ equally +'   ~~~~~~~~~~~~~~~~~~~');
-      console.log('------------------------------------------')
-    } else {
-
-      console.log('------------------------------------------')
-    }
-
-  } else {console.log('Not ' + text +'   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
-  console.log('-------------------------------------------')
-  }
-}
 
 
-
-
-
-
-
-async function invalidMelon (page, incorrectEmail, emptyEmail, emptyPassword, minimalPassword, wrongEmailPassword) {
-
-// login                   
-    await page.waitForSelector(`input[name='email']`);
-await page.type(`input[name='email']`, "");
-
-    await page.waitForTimeout(1000);
-// button login  
-    await page.waitForSelector(`button[type='submit']`);
-await page.click(`button[type='submit']`)
-
-await equallyXpathInnerText (page, `/html/body/div/div/div/div/div[1]/form/div`, 'incorrect email', incorrectEmail);
-
-await equallyXpathInnerText (page, `/html/body/div/div/div/div/div[1]/form/p[1]`, 'empty email', emptyEmail);
-
-    await page.waitForTimeout(1000);
-// password
-    await page.waitForSelector(`input[name='password']`);
-await page.type(`input[name='password']`, "");
-
-    await page.waitForTimeout(1000);
-// button login  
-    await page.waitForSelector(`button[type='submit']`);
-await page.click(`button[type='submit']`)
-
-await equallyXpathInnerText (page, `/html/body/div/div/div/div/div[1]/form/p[2]`, 'empty password', emptyPassword);
-
-await equallyXpathInnerText (page, `/html/body/div/div/div/div/div[1]/form/p[3]`, 'minimal password', minimalPassword);
-
-    await page.waitForTimeout(1000);
-// login                   
-    await page.waitForSelector(`input[name='email']`);
-await page.type(`input[name='email']`, "test@gmail.com");
-
-    await page.waitForTimeout(1000);
-// password
-    await page.waitForSelector(`input[name='password']`);
-await page.type(`input[name='password']`, "test12");
-
-    await page.waitForTimeout(1000);
-// button login  
-    await page.waitForSelector(`button[type='submit']`);
-await page.click(`button[type='submit']`)
-
-    await page.waitForTimeout(1000);
-await equallyXpathInnerText (page, `/html/body/div/div/div/div/div[1]/form/p`, 'wrong email or password', wrongEmailPassword);
-
-    await page.waitForTimeout(1000);
-// password
-    await page.waitForSelector(`input[name='password']`);
-await page.type(`input[name='password']`, "");
-                            
-await elementDelete (page, `/html/body/div/div/div/div/div[1]/form/input[2]`);
-
-    await page.waitForTimeout(1000);
-// login                   
-    await page.waitForSelector(`input[name='email']`);
-await page.type(`input[name='email']`, "");
-
-await elementDelete (page, `/html/body/div/div/div/div/div[1]/form/input[1]`);
-
-}
-
-
-
-
-
-
-describe('Authentication', function() {
+describe('ClientUpdateInformation', function() {
     let browser;
 
   before(async function() {
@@ -220,51 +53,153 @@ describe('Authentication', function() {
   });
  
  
-   it('Authentication!!!!!!!', function(done) {
+   it('ClientUpdateInformation!!!!!!!', function(done) {
 
 (async () => {
   this.retries(2);
-     this.timeout(260000);
+     this.timeout(100000);
      
   const context = await browser.createIncognitoBrowserContext();
   const page = await context.newPage();
 
 await sizeBrowser (page);
 
-await page.goto('http://localhost:3000/login');
+await page.goto('https://staging.fixdigital.co.il');
 
 
     await page.waitForTimeout(2000);
 
-await invalidMelon (page, 'Некорректный email', 'Email не может быть пустым', 'Пароль не должен быть пустым', 'Минимальная длина пароля 3 символа', 'Неправильный email или пароль');
+// login                   
+    await page.waitForSelector(`#UserName`);
+await page.type(`#UserName`, "fixtest19@gmail.com");
 
-        await registrGoogle (page, 'Russian', 'White');
+    await page.waitForTimeout(1000);
+// password
+    await page.waitForSelector(`#Password`);
+await page.type(`#Password`, "123456");
+
+    await page.waitForTimeout(1000);
+// button login  
+    await page.waitForSelector(`body > div.login-page > div.login-page-form > form > div.form-buttons > button`);
+await page.click(`body > div.login-page > div.login-page-form > form > div.form-buttons > button`)
+    console.log("Login success!"); 
+
+    await page.waitForTimeout(1000);
+// tab clients                 
+    await page.waitForSelector(`#app > header > nav.nav-header > div > ul > li:nth-child(2) > a > div > div.tooltip-trigger > div`);
+await page.click(`#app > header > nav.nav-header > div > ul > li:nth-child(2) > a > div > div.tooltip-trigger > div`)
+    console.log("Tab Clients!");     
+
+    await page.waitForTimeout(1000);
+// input ClientUpdateInformation
+    await page.waitForSelector(`#clients-search`);
+await page.type(`#clients-search`, "ClientUpdateInformation");    
+
+    await page.waitForTimeout(1000);
+// button search
+    await page.waitForSelector(`#clients-search-btn`);
+await page.click(`#clients-search-btn`)
+    console.log("Button Search!");  
+
+    await page.waitForTimeout(2000);
+// edit wizard                  
+    await page.waitForSelector(`a[tooltip-key='Edit']`);
+await page.click(`a[tooltip-key='Edit']`)
+    console.log("Button edit wizard!");
+
+    await page.waitForTimeout(3000);
+// button update client Information
+    await page.waitForSelector(`body > main > div > div > div > div.card-block > div > div.getstarted-content-container.col-xl-8.col-md-12 > div > div:nth-child(1) > div.offset-sm-0.col-sm-4.offset-xs-2 > a`);
+await page.click(`body > main > div > div > div > div.card-block > div > div.getstarted-content-container.col-xl-8.col-md-12 > div > div:nth-child(1) > div.offset-sm-0.col-sm-4.offset-xs-2 > a`)
+
+    console.log("Button update client Information!");            
+
+    await page.waitForTimeout(1000);
+// client name
+    await page.waitForSelector(`#Title`);
+await page.type(`#Title`, "");
+
+        await elementDelete (page, "/html/body/main/div/div/div[2]/div/div[1]/div[2]/form/div/div[3]/div/div/div[1]/input")
+
+// client name
+    await page.waitForSelector(`#Title`);
+await page.type(`#Title`, "TestQA");
+    console.log('TestQA!');  
+
+    await page.waitForTimeout(1000);
+// How many workers company have?
+    await page.waitForSelector(`#WorkersCount`);
+await page.click(`#WorkersCount`)
+
+    await page.waitForTimeout(1000);
+// How many workers company have?
+await page.keyboard.press('ArrowDown');
+    await page.waitForTimeout(1000)
+await page.keyboard.press('Enter');
+    console.log('6 of 10!');
+
+    await page.waitForTimeout(1000);
+// button save
+    await page.waitForSelector(`#submit-form-button`);
+await page.click(`#submit-form-button`)
+    console.log('Save information!');          
 
 
-    await chekTogl (page);
-        await registrGoogle (page, 'Russian', 'Dark');
 
 
-await languageSelect (page);
-    await chekTogl (page);
-        await registrGoogle (page, 'English', 'White');
+    await page.waitForTimeout(2000);
+// button update client Information
+    await page.waitForSelector(`body > main > div > div > div > div.card-block > div > div.getstarted-content-container.col-xl-8.col-md-12 > div > div:nth-child(1) > div.offset-sm-0.col-sm-4.offset-xs-2 > a`);
+await page.click(`body > main > div > div > div > div.card-block > div > div.getstarted-content-container.col-xl-8.col-md-12 > div > div:nth-child(1) > div.offset-sm-0.col-sm-4.offset-xs-2 > a`)
 
-await invalidMelon (page, 'Invalid email', 'Email cannot be empty', 'The password must not be empty', 'The minimum password length is 3 characters', 'Wrong email or password');
+    console.log("Button update client Information!");            
 
-    await chekTogl (page);
-        await registrGoogle (page, 'English', 'Dark');
+    await page.waitForTimeout(1000);
+// client name
+    await page.waitForSelector(`#Title`);
+await page.type(`#Title`, "");
+
+        await elementDelete (page, "/html/body/main/div/div/div[2]/div/div[1]/div[2]/form/div/div[3]/div/div/div[1]/input")
+
+// client name
+    await page.waitForSelector(`#Title`);
+await page.type(`#Title`, "ClientUpdateInformation");
+    console.log('ClientUpdateInformation!');    
+
+    await page.waitForTimeout(1000);
+// How many workers company have?
+    await page.waitForSelector(`#WorkersCount`);
+await page.click(`#WorkersCount`)
+
+    await page.waitForTimeout(1000);
+// How many workers company have?
+await page.keyboard.press('ArrowUp');
+    await page.waitForTimeout(1000)
+await page.keyboard.press('Enter');
+    console.log('2 of 5!');
+
+    await page.waitForTimeout(1000);
+// button save
+    await page.waitForSelector(`#submit-form-button`);
+await page.click(`#submit-form-button`)
+    console.log('Save information!');    
 
 
-await languageSelect (page);
-    await chekTogl (page);
-        await registrGoogle (page, 'Spanish', 'White');
 
-await invalidMelon (page, 'Email incorrecto', 'El correo electrónico no puede estar vacío', 'La contraseña no debe estar vacía', 'Longitud mínima de la contraseña 3 caracteres', 'Correo o contraseña equivocada');
+    await page.waitForTimeout(2000);
+// select logout
+    await page.waitForSelector(`body > header > div > ul > li.nav-item.dropdown.username-li`);
+await page.click(`body > header > div > ul > li.nav-item.dropdown.username-li`)  
 
-    await chekTogl (page); 
-        await registrGoogle (page, 'Spanish', 'Dark');
+    await page.waitForTimeout(2000);
+// button logout
+    await page.waitForSelector(`body > header > div > ul > li.nav-item.dropdown.username-li.open > div > a.dropdown-item.top-border`);
+await page.click(`body > header > div > ul > li.nav-item.dropdown.username-li.open > div > a.dropdown-item.top-border`)  
+    console.log('Logout success!');
 
-      await page.waitForTimeout(3000);
+
+
+      await page.waitForTimeout(2000);
 
 await page.close();
       done();
