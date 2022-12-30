@@ -132,7 +132,7 @@ await page.type(`#Title`, "TestQA");
 await page.click(`#WorkersCount`)
 
     await page.waitForTimeout(1000);
-// How many workers company have?
+// How many workers company have? 6 of 10!
 await page.keyboard.press('ArrowDown');
     await page.waitForTimeout(1000)
 await page.keyboard.press('Enter');
@@ -172,7 +172,7 @@ await page.type(`#Title`, "ClientUpdateInformation");
 await page.click(`#WorkersCount`)
 
     await page.waitForTimeout(1000);
-// How many workers company have?
+// How many workers company have?2 of 5!
 await page.keyboard.press('ArrowUp');
     await page.waitForTimeout(1000)
 await page.keyboard.press('Enter');
